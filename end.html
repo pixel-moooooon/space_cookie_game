@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> 宇宙餅乾保衛戰 </title>
+</head>
+
+<style type="text/css">
+    .warp {
+        width: 100%;
+        height: 100%;
+        padding: 30px 0 0 0;
+    }
+    *{
+        margin: 15;
+        padding: 0;
+        list-style: none;
+    }
+    .con {
+        width: 1040px;
+        height: 640px;
+        margin: auto;
+        display: flex;
+    }
+    .con #box1{
+        display: flex; /* 彈性排版 */
+        flex-direction: column; /* 彈性方向:列(縱) */
+        width: 240px;
+        box-sizing: border-box;
+        padding: 40px 30px 40px 40px;
+        background-image: url(./img/bg_l.gif);
+    }
+    .con #box2{
+        width: 640px;
+        height: 640px;
+        box-sizing: border-box;
+        background-image: url(./img/bg_mid1-2.gif);
+        position: relative;
+        cursor: crosshair;
+    }
+    .con #box3{
+        width: 160px;
+        box-sizing: border-box;
+        padding: 23px 50px 40px 15px;
+        background-image: url(./img/bg_r3.gif);
+    }
+    .cookie {
+        position: absolute;
+    }
+    #txtbox {
+        height: 200px;
+        text-align:left;
+        padding: 0px 5px 0px 5px;
+        
+    }
+    #txt {
+        margin: 0;
+        padding: 50px 60px 40px 60px;
+        width: auto;
+        height: auto;
+    }
+</style>
+
+<script>
+    let e1 = new Audio("./music/thank.mp3");
+    function button() {
+        let bt = new Audio("./music/button.mp3");
+        bt.play();
+    }
+    function boss_click() {
+        let bc = new Audio("./music/boss.mp3");
+        bc.play();
+    }
+    
+    function init() {
+        e1.play();
+        document.getElementById("bosstext").innerHTML = "真的都結束了!";
+        document.getElementById("boss").src = "./img/boss_h.gif";
+        }
+    
+    let next = 0;
+    function nextl() {
+        next = next + 1;
+        button();
+            if (next  == 1){
+                document.getElementById("re").style.display = "block";
+                document.getElementById("next").style.display = "none";
+                document.getElementById("txt").innerHTML = 
+                    "你只需按下左上<d style='color: gold;'>重新來過鍵</d><br>這次道別就是真的道別啦<br>感謝你的一路參與<br><d style='color: gold;'>掰掰!</d><br><br>也歡迎下載另一款餅乾遊戲<br>去那邊吃片餅乾吧";
+                document.getElementById("qr").style.display = "block";
+            }
+            
+    }
+    function re() {
+        document.getElementById("re").src = "./img/re.png";
+        document.getElementById("next").src = "./img/next.png";
+    }
+    function chn() {
+        document.getElementById("next").src = "./img/next2.png";
+    }
+    function chr() {
+        document.getElementById("re").src = "./img/re2.png";
+    }
+    function rel() {
+        location.href = "start.html";
+    }
+    let msg = new Array(5);
+    msg[0] = "嘿!專心點<br>別碰我";
+    msg[1] = "夠了喔!<br>專心!";
+    msg[2] = "別再碰我了";
+    msg[3] = "你還有任務要執行吧!";
+    msg[4] = "停下來!";
+    function talk() {
+        boss_click();
+        let i = Math.floor(Math.random() * 5);
+        console.log(i);
+        document.getElementById("bosstext").innerHTML = msg[i];   
+    }
+</script>
+
+<body onload="init()" style="background-color:#000000">
+   
+   <div class="warp">
+
+        <div class="con">
+            <div class="box" id="box1" align = "center">
+                <font size="" face="微軟正黑體">
+                    <h1 id="counter" style="color: orangered">
+                    - -
+                    </h1>
+                </font>
+                <h2 align = center style="color: white;position:relative;top:-3px;" > 
+                   指揮官耐心度
+                </h2>
+                <div id="txtbox">
+                   <h1 id="bosstext" style="color: white; position:relative;top:-10px;">
+                      真的都結束了!
+                  </h1>  
+                </div>
+                <img id="boss" src="./img/boss_h.gif" width="172"  style="position:relative;top:23px;" onclick="talk()">
+                    
+            </div>
+            <div class="box" id="box2">
+                <h1 margin = "0">
+                   <p id="txt" style="color: white;line-height:1.5;">
+                        我想這次是真的結束了<br>
+                        真沒想到會遇見這麼棘手的事情<br>
+                        能擊敗他真是太好了<br>
+                        我們公司又能維持很久的和平了<br><br>
+                        再次表達<d style="color: gold">萬分感謝</d><br>
+                        
+                    </p>
+                    <img src="./img/gameqr.png" width="120px" id="qr" style="position:relative;top: -30px; left: 60px;display: none">
+               </h1>
+            </div>
+            <div class="box" id="box3">                
+                    <p align="center" id="here">
+                        <img src="./img/next.png" type="button" id="next" onclick="nextl()" height="80px" onmouseenter="chn()" onmouseleave="re()">
+                    </p>
+                     <p align="center" id="here">
+                        <img src="./img/re.png" type="button" id="re" onclick="rel()" height="80px" onmouseenter="chr()" onmouseleave="re()" style="display: none">
+                    </p>
+                <font size="5.5" face="微軟正黑體">
+                    <p align="right" style="position:relative;top:32px;left: 2px;padding:0px 6px 0px 6px; color: white
+                   " id="score">
+                    000    
+                    </p>
+                </font>
+                <h3>
+                    <p align="center" style="position:relative;top:40px; color: white
+                   " id="life">
+                    你的業績    
+                    </p>   
+                </h3>
+                                  
+                <p>
+                   <a href="https://www.instagram.com/pixel_moooooon/">
+                       <img src="./img/png.png" width="96px" height="92px" style="position:relative;top:206px;left: 1px;">
+                   </a>                    
+                </p>
+                
+                <!--<audio controls autoplay loop style="display: none">
+                    <source src="./music/game.mp3">
+                </audio> -->
+                
+                      
+            </div>
+        </div>
+   </div>
+    
+</body>
+</html>

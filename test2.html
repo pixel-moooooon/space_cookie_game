@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇宙餅乾</title>
+</head>
+
+<style>
+    .boxes-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .box {
+        background-image: url(./img/space.png);
+        width: 50vw; /* 使用相對單位 vw (viewport width) */
+        height: 100vh; /* 使用相對單位 vh (viewport height) */
+        max-width: 500px; /* 設定最大寬度 */
+        max-height: 500px; /* 設定最大高度 */
+    }
+    #box1 {
+        background-image: url(./img/space.png);
+        width: 500px; /* 固定寬度 */
+        height: 500px; /* 固定高度 */
+    }
+    #box2 {
+        background-image: url(./img/space.png);
+        width: 200px; /* 固定寬度 */
+        height: 500px; /* 固定高度 */
+    }
+    #box3 {
+        background-image: url(./img/space.png);
+        width: 200px; /* 固定寬度 */
+        height: 500px; /* 固定高度 */
+    }
+    .cookie {
+        position: absolute;
+    }
+</style>
+
+<script>
+    let cookies = new Object();
+    let s = 0;
+    let time = 30;
+
+    function count() {
+        time = time - 1;
+        document.getElementById("counter").innerHTML = time.toString();
+        if (time <= 0) {
+            is_start = 0;
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_h.gif";
+            document.getElementById("bosstext").innerHTML = "做得好!果然你有心也辦得到";
+        }
+    }
+
+    function init() {
+        let x, y, x0, y0;
+        let name;
+        for (let i = 1; i <= 6; i++) {
+            name = "c" + i.toString();
+
+            // 隨機生成位置，確保在 box1 內
+            x = Math.max(0, Math.min(Math.floor(Math.random() * (500 - 50)), 450));
+            y = Math.max(0, Math.min(Math.floor(Math.random() * (500 - 50)), 450));
+
+            x0 = Math.floor(Math.random() * 450);
+            y0 = Math.floor(Math.random() * 450);
+            cookies[name] = { x: x, y: y, x0: x0, y0: y0 };
+            document.getElementById(name).style.left = x.toString() + "px";
+            document.getElementById(name).style.top = y.toString() + "px";
+        }
+    }
+
+    function change() {
+        let name;
+        for (let i = 1; i <= 6; i++) {
+            name = "c" + i.toString();
+            cookies[name].x = cookies[name].x + (cookies[name].x0 - cookies[name].x) * 0.05 + Math.floor(Math.random() * 7) - 3;
+            cookies[name].y = cookies[name].y + (cookies[name].y0 - cookies[name].y) * 0.05 + Math.floor(Math.random() * 7) - 3;
+
+            // 確保 cookies 不超出 box1 的邊界
+            cookies[name].x = Math.max(0, Math.min(cookies[name].x, 450));
+            cookies[name].y = Math.max(0, Math.min(cookies[name].y, 450));
+
+            document.getElementById(name).style.left = cookies[name].x.toString() + "px";
+            document.getElementById(name).style.top = cookies[name].y.toString() + "px";
+        }
+    }
+
+    function next() {
+        let name;
+        for (let i = 1; i <= 6; i++) {
+            name = "c" + i.toString();
+            cookies[name].x0 = Math.floor(Math.random()*450);
+            cookies[name].y0 = Math.floor(Math.random()*450);
+        }
+    }
+
+    let tag1, tag2, tag3;
+    let is_start = 0;
+
+    function move() {
+        is_start = 1;
+        tag1 = setInterval(count, 1000);
+        tag2 = setInterval(change, 40);
+        tag3 = setInterval(next, 2000);
+    }
+
+    function gameOver(obj) {
+        if (is_start) {
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_a.gif";
+            document.getElementById("bosstext").innerHTML = "搞什麼!撞到餅乾了!";
+        }
+    }
+</script>
+
+<body onload="init()">
+    <h1 align="center">Cookie Game</h1>
+    <hr>
+    <div class="boxes-container" align="center">
+        <div class="box" id="box2">
+            <!-- 內容保持不變 -->
+            <p align=center>
+                <img id="boss" src="./img/boss.gif" width="100">
+            </p>
+            <h3 align=center style="color: darkred" id="bosstext"> 老闆耐心指數 : <span id="counter" style="color: orangered">30</span></h3>
+        </div>
+        <div class="box" id="box1">
+            <img id="c1" src="./img/c1.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+            <img id="c2" src="./img/c2.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+            <img id="c3" src="./img/c3.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+            <img id="c4" src="./img/c4.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+            <img id="c5" src="./img/c5.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+            <img id="c6" src="./img/c6.png" width="50" class="cookie" onmouseenter="gameOver(this)">
+        </div>
+        <div class="box" id="box3">
+            <!-- 內容保持不變 -->
+        </div>
+    </div>
+    <hr>
+    <p align="center">
+        <input type="button" value="MOVE" onclick="move()">
+    </p>
+</body>
+
+</html>

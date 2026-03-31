@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> 宇宙餅乾 </title>
+</head>
+
+<style type="text/css">
+    .warp {
+        width: 100%;
+        height: 100%;
+        padding: 30px 0 0 0;
+    }
+    *{
+        margin: 15;
+        padding: 0;
+        list-style: none;
+    }
+    .con {
+        width: 1040px;
+        height: 640px;
+        margin: auto;
+        display: flex;
+    }
+    .con #box1{
+        display: flex; /* 彈性排版 */
+        flex-direction: column; /* 彈性方向:列(縱) */
+        width: 240px;
+        box-sizing: border-box;
+        padding: 40px 30px 40px 40px;
+        background-image: url(./img/bg_l.gif);
+    }
+    .con #box2{
+        width: 640px;
+        height: 640px;
+        box-sizing: border-box;
+        background-image: url(./img/bg_mid3-4.gif);
+        position: relative;
+        cursor: crosshair;
+    }
+    .con #box3{
+        width: 160px;
+        box-sizing: border-box;
+        padding: 23px 50px 40px 15px;
+        background-image: url(./img/bg_r3.gif);
+    }
+    .cookie {
+        position: absolute;
+    }
+    #txtbox {
+        height: 200px;
+        text-align:left;
+        padding: 0px 5px 0px 5px;
+        
+    }
+</style>
+
+<script>
+    let e1 = new Audio("./music/change.mp3");
+    function button() {
+        let bt = new Audio("./music/button.mp3");
+        bt.play();
+    }
+    function boss_click() {
+        let bc = new Audio("./music/boss.mp3");
+        bc.volume = 0.3;
+        bc.play();
+    }
+    
+    function init() {
+        e1.play();
+        document.getElementById("bosstext").innerHTML = "下一關再重新拼業績!";
+        document.getElementById("boss").src = "./img/boss_h.gif";
+        }
+    
+    
+    function nextl() {
+            button();
+            location.href = "lv4.3.html";
+    }
+    function re() {
+        document.getElementById("next").src = "./img/next.png";
+    }
+    function chn() {
+        document.getElementById("next").src = "./img/next2.png";
+    }
+    let msg = new Array(5);
+    msg[0] = "嘿!專心點<br>別碰我";
+    msg[1] = "夠了喔!<br>專心!";
+    msg[2] = "別再碰我了";
+    msg[3] = "你還有任務要執行吧!";
+    msg[4] = "停下來!";
+    function talk() {
+        boss_click();
+        let i = Math.floor(Math.random() * 5);
+        console.log(i);
+        document.getElementById("bosstext").innerHTML = msg[i];   
+    }
+</script>
+
+<body onload="init()" style="background-color:#844200">
+   
+   <div class="warp">
+
+        <div class="con">
+            <div class="box" id="box1" align = "center">
+                <font size="" face="微軟正黑體">
+                    <h1 id="counter" style="color: orangered">
+                    - -
+                    </h1>
+                </font>
+                <h2 align = center style="color: white;position:relative;top:-3px;" > 
+                   指揮官耐心度
+                </h2>
+                <div id="txtbox">
+                   <h1 id="bosstext" style="color: white; position:relative;top:-10px;">
+                      下一關再重新拼業績!
+                  </h1>  
+                </div>
+                <img id="boss" src="./img/boss_h.gif" width="172"  style="position:relative;top:23px;" onclick="talk()">
+                    
+            </div>
+            <div class="box" id="box2">
+                
+            </div>
+            <div class="box" id="box3">                
+                    <p align="center" id="here">
+                        <img src="./img/next.png" type="button" id="next" onclick="nextl()" height="80px" onmouseenter="chn()" onmouseleave="re()">
+                    </p>
+                <font size="5.5" face="微軟正黑體">
+                    <p align="right" style="position:relative;top:32px;left: 2px;padding:0px 6px 0px 6px; color: white
+                   " id="score">
+                    000    
+                    </p>
+                </font>
+                <h3>
+                    <p align="center" style="position:relative;top:40px; color: white
+                   ">
+                    你的業績    
+                    </p>   
+                </h3>
+                                  
+                <p>
+                   <a href="https://www.instagram.com/pixel_moooooon/">
+                       <img src="./img/png.png" width="96px" height="92px" style="position:relative;top:206px;left: 1px;">
+                   </a>                    
+                </p>
+                
+                <!--<audio controls autoplay loop style="display: none">
+                    <source src="./music/game.mp3">
+                </audio> -->
+                
+                      
+            </div>
+        </div>
+   </div>
+    
+</body>
+</html>

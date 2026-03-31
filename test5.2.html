@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Document</title>
+</head>
+
+<style type="text/css">
+    *{
+        margin: 15;
+        padding: 0;
+        list-style: none;
+    }
+    .con {
+        width: 1300px;
+        height: 800px;
+        margin: auto;
+        display: flex;
+    }
+    .con #box1{
+        width: 300px;
+        box-sizing: border-box;
+        padding: 15px;
+        background-image: url(./img/space.png);
+    }
+    .con #box2{
+        width: 800px;
+        height: 800px;
+        box-sizing: border-box;
+        padding: 15px;
+        background-image: url(./img/space.png);
+        position: relative;
+    }
+    .con #box3{
+        width: 200px;
+        box-sizing: border-box;
+        padding: 15px;
+        background-image: url(./img/space.png);
+    }
+    .cookie {
+        position: absolute;
+    }
+</style>
+
+<script>
+    let x = 125;
+    let y = 225;
+    let dx = 3;
+    let dy = 2;
+    let cookies = new Object();
+    let s = 0;
+    let time = 30;
+    function count() {
+        time = time - 1;
+        document.getElementById("counter").innerHTML = time.toString();
+        if (time <= 0) {
+            is_start = 0;
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_h.gif";
+            document.getElementById("bosstext").innerHTML = "做得好!果然你有心也辦得到";
+        }
+    }
+    function init() {
+        let x, y, x0, y0;
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            x = Math.floor(Math.random()*700);
+            y = Math.floor(Math.random()*700);
+            x0 = Math.floor(Math.random()*700);
+            y0 = Math.floor(Math.random()*700);
+            cookies[name] = { x:x, y:y, x0:x0, y0:y0 };
+            document.getElementById(name).style.left = x.toString() + "px";
+            document.getElementById(name).style.top = y.toString() + "px";
+        }
+    }
+    function change() {
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            x = x + dx;
+            y = y + dy;
+            if ((x < 0) || (x > 450)) { dx = -dx; }
+            if ((y < 0) || (y > 450)) { dy = -dy; }
+            document.getElementById(name).style.left = x.toString() + "px";
+            document.getElementById(name).style.top  = y.toString() + "px";
+        }
+    }
+    function next() {
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            cookies[name].x0 = Math.floor(Math.random()*700);
+            cookies[name].y0 = Math.floor(Math.random()*700);
+        }
+    }
+    let tag1, tag2, tag3;
+    let is_start = 0;
+    function move() {
+        is_start = 1;
+        tag1 = setInterval(count, 1000);
+        tag2 = setInterval(change, 40);
+        tag3 = setInterval(next, 1000);
+    }
+    /*
+    function hit(obj) {
+        obj.style.visibility = "hidden";
+        s = s + 1;
+        document.getElementById("score").innerHTML = s.toString();
+        if (s == 6) {
+            location.href = "p04-p05.html";
+        }
+    }
+    */
+    function gameOver(obj){
+        if( is_start )
+        {
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_a.gif";
+            document.getElementById("bosstext").innerHTML = "搞什麼!撞到餅乾了!";
+        }
+    }
+</script>
+
+<body onload="init()">
+   
+   <div class="warp">
+       <h1 align="center">123</h1>
+        <div class="con">
+            <div class="box" id="box1">
+                <p align = center>
+        <img id="boss" src="./img/boss.gif" width="100">
+    </p>
+    <h3 align = center style="color: darkred" id="bosstext"> 老闆耐心指數 : <span id="counter" style="color: orangered">30</span></h3>
+            </div>
+            <div class="box" id="box2">
+                <img id="c7" src="./img/ca.png" width="100" class="cookie" onmouseenter="win()">
+                <img id="c1" src="./img/c1.png" width="100" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c2" src="./img/c2.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c3" src="./img/c3.png" width="100" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c4" src="./img/c4.png" width="100" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c5" src="./img/c5.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c6" src="./img/c6.png" width="100" class="cookie" onmouseenter="gameOver(this)">
+            </div>
+            <div class="box" id="box3">
+                <p align="center">
+                <input type="button" value="MOVE" onclick="move()">
+                </p>
+            </div>
+        </div>
+   </div>
+    
+</body>
+</html>

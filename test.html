@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>宇宙餅乾</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<style>
+    .boxes-container {
+        display: flex;
+    }
+
+    .box {
+        background-image: url(./img/space.png);
+        width: 50vw; /* 使用相對單位 vw (viewport width) */
+        height: 100vh; /* 使用相對單位 vh (viewport height) */
+        max-width: 500px; /* 設定最大寬度 */
+        max-height: 500px; /* 設定最大高度 */
+        margin: 0 auto;
+    }
+
+    .cookie {
+        position: absolute;
+    }
+</style>
+
+<body onload="init()">
+    <h1 align="center">Cookie Game</h1>
+    <hr>
+    <h3 align="center">Score = <span id="score">0</span></h3>
+    <hr>
+    <div class="boxes-container">
+        <div class="box" id="box">
+            <!-- 內容保持不變 -->
+        </div>
+        <div class="box" id="box2">
+            <!-- 內容保持不變 -->
+        </div>
+        <div class="box" id="box3">
+            <!-- 內容保持不變 -->
+        </div>
+    </div>
+    <hr>
+    <p align="center">
+        <input type="button" value="MOVE" onclick="move()">
+    </p>
+</body>
+
+</html>

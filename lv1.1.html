@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> 宇宙餅乾 </title>
+</head>
+
+<style type="text/css">
+    .warp {
+        width: 100%;
+        height: 100%;
+        padding: 10px 0 0 0;
+    }
+    *{
+        margin: 15;
+        padding: 0;
+        list-style: none;
+    }
+    .con {
+        width: 1040px;
+        height: 640px;
+        margin: auto;
+        display: flex;
+    }
+    .con #box1{
+        display: flex; /* 彈性排版 */
+        flex-direction: column; /* 彈性方向:列(縱) */
+        width: 240px;
+        box-sizing: border-box;
+        padding: 40px 30px 40px 40px;
+        background-image: url(./img/bg_l.gif);
+    }
+    .con #box2{
+        width: 640px;
+        height: 640px;
+        box-sizing: border-box;
+        background-image: url(./img/bg_mid.gif);
+        position: relative;
+        cursor: crosshair;
+    }
+    .con #box3{
+        width: 160px;
+        box-sizing: border-box;
+        padding: 23px 50px 40px 15px;
+        background-image: url(./img/bg_r.gif);
+    }
+    .cookie {
+        position: absolute;
+    }
+    #txtbox {
+        height: 200px;
+        text-align:left;
+        padding: 0px 5px 0px 5px;
+        
+    }
+</style>
+
+<script>
+    let e1 = new Audio("./music/win.mp3");
+    let e2 = new Audio("./music/magic.mp3");
+    let bgm1 = new Audio("./music/bgm1.mp3");
+    let bgmb = new Audio("./music/bgmB.mp3");
+    bgm1.volume = 0.3;
+    bgmb.volume = 0.3;
+    let cookies = new Object();
+    let s = 0;
+    let time = 30;
+    function count() {
+        time = time - 1;
+        document.getElementById("counter").innerHTML = time.toString();
+        if (time <= 0) {
+            is_start = 0;
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_a.gif";
+            document.getElementById("bosstext").innerHTML = "喂喂!<br>弄太久了吧";
+            document.getElementById("re").style.display = "block";
+            document.getElementById("go").style.display = "none";
+        }
+    }
+    function init() {
+        let x, y, x0, y0;
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            x = Math.floor(Math.random()*(530 - 30) + 30);
+            y = Math.floor(Math.random()*(510 - 50) + 50);
+            x0 = Math.floor(Math.random()*(530 - 30) + 30);
+            y0 = Math.floor(Math.random()*(510 - 50) + 50);
+            time = 30;
+            cookies[name] = { x:x, y:y, x0:x0, y0:y0 };
+            document.getElementById(name).style.left = x.toString() + "px";
+            document.getElementById(name).style.top = y.toString() + "px";
+            }
+        document.getElementById("re").style.display = "none";
+        document.getElementById("go").style.display = "block";
+        document.getElementById("bosstext").innerHTML = "讓我看看你的本領吧!";
+        document.getElementById("boss").src = "./img/boss.gif";
+        document.getElementById("counter").innerHTML = "30";
+        clearInterval(tag2);
+        clearInterval(tag3);
+        is_start = 0;
+        bgmb.currentTime = 0;
+        bgm1.currentTime = 0;
+        if (cboss > 15) {
+            document.getElementById("boss").src = "./img/w_b.png";
+            document.getElementById("bosstext").innerHTML = "我就用這個型態監督你";
+        }
+    }
+    function change() {
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            cookies[name].x = cookies[name].x + (cookies[name].x0-cookies[name].x)*0.1 + Math.floor(Math.random()*7 - 3);
+            cookies[name].y = cookies[name].y + (cookies[name].y0-cookies[name].y)*0.1 + Math.floor(Math.random()*7 - 3);
+            document.getElementById(name).style.left = cookies[name].x.toString() + "px";
+            document.getElementById(name).style.top = cookies[name].y.toString() + "px";
+        }
+    }
+    function next() {
+        let name;
+        for (let i = 1; i <= 7; i++) {
+            name = "c" + i.toString();
+            cookies[name].x0 = Math.floor(Math.random()*(530 - 30) + 30);
+            cookies[name].y0 = Math.floor(Math.random()*(510 - 50) + 50);
+        }
+    }
+    function nextl() {
+            location.href = "lv2.html";
+    }
+    let tag1, tag2, tag3;
+    let is_start = 0;
+    function move() {
+        if (is_start == 0) {
+            is_start = 1;
+            tag1 = setInterval(count, 1000);
+            tag2 = setInterval(change, 40);
+            tag3 = setInterval(next, 1000);
+            if (cboss <= 15){
+                bgm1.play();
+            }
+            if (cboss > 15) {
+                document.getElementById("boss").src = "./img/w_b_g.png";
+                document.getElementById("bosstext").innerHTML = "認真工作!<br>加油加油!";
+                bgmb.play();
+            }
+        }
+         else {
+            window.alert("別按了!再按會嚇到餅乾!!!");
+        }
+        
+    }
+    /*
+    function hit(obj) {
+        obj.style.visibility = "hidden";
+        s = s + 1;
+        document.getElementById("score").innerHTML = s.toString();
+        if (s == 6) {
+            location.href = "p04-p05.html";
+        }
+    }
+    */
+    function handleObjectDisappear(objId, gifPath) {
+        let element = document.getElementById(objId);
+        if (element) {
+            element.src = gifPath;
+            let s = 1;
+            function go() {
+                s = s - 1;
+                if (s == 0) {
+                    element.style.display = "none";
+                }
+            }
+            setInterval(go, 1000);
+        }
+    }
+    function gameOver(obj){
+        if( is_start )
+        {
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            document.getElementById("boss").src = "./img/boss_a.gif";
+            document.getElementById("bosstext").innerHTML = "搞什麼!<br>餅乾都被你撞碎了!";
+            document.getElementById("re").style.display = "block";
+            document.getElementById("go").style.display = "none";
+            is_start = 0;
+            bgm1.pause();
+            bgmb.pause();
+            if (obj == c1 || obj == c2 || obj == c3 || obj == c4) {
+            handleObjectDisappear(obj, `./img/${obj.id}.gif`);
+            }
+            if (obj == box2){
+                document.getElementById("bosstext").innerHTML = "不要分心!<br>快回去工作!";
+            }
+            if (cboss > 15) {
+                document.getElementById("boss").src = "./img/w_b_a.png";
+                document.getElementById("bosstext").innerHTML = "嘖!<br>還是廢柴一個...";
+            }
+        }
+    }
+    let is_win = 0;
+    function win() {
+            if (is_start) {
+            document.getElementById("re").style.display = "none";
+            document.getElementById("go").style.display = "none";
+            document.getElementById("next").style.display = "block";
+            document.getElementById("bosstext").innerHTML = "好耶!<br>快去下個區域吧!";
+            document.getElementById("boss").src = "./img/boss_h.gif";
+            e1.play();
+            clearInterval(tag1);
+            clearInterval(tag2);
+            clearInterval(tag3);
+            is_start = 0;
+            bgm1.pause();
+            bgmb.pause();
+            is_win = 1;
+                if (cboss > 15) {
+                document.getElementById("boss").src = "./img/w_b_h.png";
+                document.getElementById("bosstext").innerHTML = "嘿!<br>我就知道你可以的!";
+            }
+            }
+            else {
+                if (is_win) {
+                    window.alert("都贏了...放過我吧");
+                }
+                else {
+                    window.alert("碰我幹嘛!遊戲還沒開始");
+                }
+            }
+    }
+    function chg() {
+        document.getElementById("go").src = "./img/go2.png";
+        document.getElementById("re").src = "./img/re.png";
+        document.getElementById("next").src = "./img/next.png";
+    }
+    function chr() {
+        document.getElementById("go").src = "./img/go.png";
+        document.getElementById("re").src = "./img/re2.png";
+        document.getElementById("next").src = "./img/next.png";
+    }
+    function re() {
+        document.getElementById("go").src = "./img/go.png";
+        document.getElementById("re").src = "./img/re.png";
+        document.getElementById("next").src = "./img/next.png";
+    }
+    function chn() {
+        document.getElementById("go").src = "./img/go.png";
+        document.getElementById("re").src = "./img/re.png";
+        document.getElementById("next").src = "./img/next2.png";
+    }
+    let cboss = 0;
+    let msg = new Array(5);
+    msg[0] = "嘿!專心點<br>別碰我";
+    msg[1] = "夠了喔!<br>專心!";
+    msg[2] = "別再碰我了";
+    msg[3] = "你還有任務要執行吧!";
+    msg[4] = "停下來!";
+    function talk() {
+        let i = Math.floor(Math.random() * 5);
+        console.log(i);
+        document.getElementById("bosstext").innerHTML = msg[i];
+        cboss = cboss + 1;
+        if (is_win == 0) {
+            if (cboss > 15) {
+                document.getElementById("boss").src = "./img/w_b.png";
+                document.getElementById("bosstext").innerHTML = "別碰了!<br>變這樣會比較認真嗎";
+            }
+            if (cboss == 16) {
+                e2.play();
+                bgmb.play();
+                bgm1.pause();
+            } 
+            if (cboss > 50) {
+                document.getElementById("boss").src = "./img/w_b_1.png";
+                document.getElementById("bosstext").innerHTML = "你看起來比較想玩別的遊戲";
+            }            
+        }
+        
+    }
+</script>
+
+<body onload="init()" style="background-color:#3F2749">
+   
+   <div class="warp">
+
+        <div class="con">
+            <div class="box" id="box1" align = "center">
+                <h1 id="counter" style="color: orangered">
+                30
+                </h1>
+                <h2 align = center style="color: white" > 
+                   老闆耐心指數
+                </h2>
+                <div id="txtbox">
+                   <h1 id="bosstext" style="color: white">
+                      讓我看看你的本領吧!
+                  </h1>  
+                </div>
+                <img id="boss" src="./img/boss.gif" width="172"  style="position:relative;top:28px;" onclick="talk()">
+                    
+            </div>
+            <div class="box" id="box2" onmouseleave="gameOver(this)">
+                <img id="c7" src="./img/ca.gif" width="80" class="cookie" onclick="win()">
+                <img id="c1" src="./img/c1.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c2" src="./img/c2.png" width="64" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c3" src="./img/c3.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c4" src="./img/c4.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c5" src="./img/c5.png" width="64" class="cookie" onmouseenter="gameOver(this)">
+                <img id="c6" src="./img/c6.png" width="80" class="cookie" onmouseenter="gameOver(this)">
+            </div>
+            <div class="box" id="box3">
+                <p align="center" id="here">
+                    <img src="./img/go.png" type="button" id="go" onclick="move()" height="80px" onmouseenter="chg()" onmouseleave="re()">
+                </p>
+                <p align="center" id="here">
+                    <img src="./img/re.png" type="button" id="re" onclick="init()" height="80px" onmouseenter="chr()" onmouseleave="re()" style="display: none">
+                </p>
+                
+                    <p align="center" id="here">
+                        <img src="./img/next.png" type="button" id="next" onclick="nextl()" height="80px" onmouseenter="chn()" onmouseleave="re()" style="display: none">
+                    </p>
+                
+                <!--<audio controls autoplay loop style="display: none">
+                    <source src="./music/game.mp3">
+                </audio> -->
+                
+                      
+            </div>
+        </div>
+   </div>
+    
+</body>
+</html>
